@@ -1,39 +1,42 @@
-const fill = document.querySelector('.fill')
-const empties = document.querySelectorAll('.empty')
+const result = document.getElementById('result')
+const filter = document.getElementById('filter')
+const listItems = []
 
-fill.addEventListener('dragstart', dragStart)
-fill.addEventListener('dragend', dragEnd)
+getData()
 
-for(const empty of empties) {
-    empty.addEventListener('dragover', dragOver)
-    empty.addEventListener('dragenter', dragEnter)
-    empty.addEventListener('dragleave', dragLeave)
-    empty.addEventListener('drop', dragDrop)
+filter.addEventListener('input', (e) => filterData(e.target.value))
+
+async function getData() {
+    const res = await fetch('https://randomuser.me/api?results=50')
+
+    const { results } = await res.json()
+
+    // Clear result
+    result.innerHTML = ''
+
+    results.forEach(user => {
+        const li = document.createElement('li')
+
+        listItems.push(li)
+
+        li.innerHTML = `
+            <img src="${user.picture.large}" alt="${user.name.first}">
+            <div class="user-info">
+                <h4>${user.name.first} ${user.name.last}</h4>
+                <p>${user.location.city}, ${user.location.country}</p>
+            </div>
+        `
+
+        result.appendChild(li)
+    })
 }
 
-function dragStart() {
-    this.className += ' hold' 
-    setTimeout(() => this.className = 'invisible', 0)
-}
-
-function dragEnd() {
-    this.className = 'fill'
-}
-
-function dragOver(e) {
-    e.preventDefault()
-}
-
-function dragEnter(e) {
-    e.preventDefault()
-    this.className += ' hovered'
-}
-
-function dragLeave() {
-    this.className = 'empty'
-}
-
-function dragDrop() {
-    this.className = 'empty'
-    this.append(fill)
+function filterData(searchTerm) {
+    listItems.forEach(item => {
+        if(item.innerText.toLowerCase().includes(searchTerm.toLowerCase())) {
+            item.classList.remove('hide')
+        } else {
+            item.classList.add('hide')
+        }
+    })
 } 

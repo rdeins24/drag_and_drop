@@ -6,16 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="index.css">
-    <title>Drag and drop</title>
+    <title>Search</title>
 </head>
 <body>
-    <div class="empty">
-        <div class="fill" draggable="true"></div>
+    <div class="container">
+        <header class="header">
+          <h4 class="title">Live User Filter</h4>
+          <small class="subtitle">Search by name and/or location</small>
+          <input type="text" id="filter" placeholder="Search">
+        </header>
+  
+        <ul id="result" class="user-list">
+          <li>
+            <h3>Loading...</h3>
+          </li>
+        </ul>
       </div>
-      <div class="empty"></div>
-      <div class="empty"></div>
-      <div class="empty"></div>
-      <div class="empty"></div>
 
 
     <script src="index.js"></script>
